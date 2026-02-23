@@ -1,0 +1,48 @@
+{% extends 'main/base.html' %}
+
+{% block title %}Manage Loans - Admin{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <h2><i class="fas fa-hand-holding-usd"></i> Manage Loan Applications</h2>
+    
+    <div class="card">
+        <div class="card-body">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>User</th>
+                        <th>Car</th>
+                        <th>Amount</th>
+                        <th>Duration</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for loan in loans %}
+                    <tr>
+                        <td>{{ loan.user.username }}</td>
+                        <td>{{ loan.car.company.name }} {{ loan.car.model }}</td>
+                        <td>${{ loan.amount }}</td>
+                        <td>{{ loan.duration_months }} months</td>
+                        <td>
+                            <span class="badge bg-{% if loan.status == 'approved' %}success{% elif loan.status == 'pending' %}warning{% else %}danger{% endif %}">
+                                {{ loan.get_status_display }}
+                            </span>
+                        </td>
+                        <td>
+                            <a href="{% url 'main:admin_loan_update' loan.pk %}" class="btn btn-sm btn-primary">Update</a>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="6" class="text-center">No loan applications found.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

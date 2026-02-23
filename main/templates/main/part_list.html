@@ -1,0 +1,42 @@
+{% extends 'main/base.html' %}
+
+{% block title %}Parts - Car Sale Management{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <h2 class="mb-4"><i class="fas fa-wrench"></i> Car Parts & Accessories</h2>
+    <div class="row">
+        {% for part in parts %}
+        <div class="col-md-4 mb-4">
+            <div class="card h-100">
+                {% if part.image %}
+                    <img src="{{ part.image.url }}" class="card-img-top" alt="{{ part.name }}" style="height: 200px; object-fit: cover;">
+                {% else %}
+                    <div class="card-img-top bg-secondary d-flex align-items-center justify-content-center" style="height: 200px;">
+                        <i class="fas fa-cog fa-4x text-white"></i>
+                    </div>
+                {% endif %}
+                <div class="card-body">
+                    <h5 class="card-title">{{ part.name }}</h5>
+                    <p class="card-text">
+                        <strong>Category:</strong> {{ part.category }}<br>
+                        <strong>Price:</strong> ${{ part.price }}<br>
+                        <strong>Stock:</strong> {{ part.stock }} units
+                    </p>
+                    <p class="card-text"><small>{{ part.description|truncatewords:15 }}</small></p>
+                    {% if user.is_authenticated and not user.is_staff %}
+                        <a href="{% url 'main:add_to_cart' part.pk %}" class="btn btn-primary w-100">
+                            <i class="fas fa-cart-plus"></i> Add to Cart
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-12">
+            <div class="alert alert-info">No parts available at the moment.</div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,71 @@
+{% extends 'main/base.html' %}
+{% block title %}Company Dashboard - {{ company.name }}{% endblock %}
+{% block content %}
+<div style="background:linear-gradient(135deg,#1a1a2e,#16213e);color:white;padding:40px 0;margin-bottom:40px;">
+    <div class="container">
+        <h1 style="font-family:'Rajdhani',sans-serif;font-weight:700;">
+            {% if company.logo %}<img src="{{ company.logo.url }}" style="height:50px;object-fit:contain;margin-right:15px;">{% endif %}
+            {{ company.name }} Dashboard
+        </h1>
+        <p style="opacity:0.8;margin:0;">{{ company.country }} · Est. {{ company.established_year|default:"N/A" }}</p>
+    </div>
+</div>
+<div class="container">
+    <div class="row mb-4">
+        <div class="col-md-2 mb-3"><div class="stat-card" style="background:#e94560;"><h3>{{ stats.total_cars }}</h3><p>Total Cars</p></div></div>
+        <div class="col-md-2 mb-3"><div class="stat-card" style="background:#1a1a2e;"><h3>{{ stats.total_parts }}</h3><p>Total Parts</p></div></div>
+        <div class="col-md-2 mb-3"><div class="stat-card" style="background:#16213e;"><h3>{{ stats.pending_test_drives }}</h3><p>Pending Test Drives</p></div></div>
+        <div class="col-md-2 mb-3"><div class="stat-card" style="background:#0f3460;"><h3>{{ stats.pending_loans }}</h3><p>Pending Loans</p></div></div>
+        <div class="col-md-2 mb-3"><div class="stat-card" style="background:#28a745;"><h3>{{ stats.car_purchases }}</h3><p>Car Purchases</p></div></div>
+        <div class="col-md-2 mb-3"><div class="stat-card" style="background:#17a2b8;"><h3>{{ stats.part_orders }}</h3><p>Part Orders</p></div></div>
+    </div>
+    <div class="row">
+        <div class="col-md-3 mb-3">
+            <div class="card p-3 text-center">
+                <i class="fas fa-car fa-2x mb-2" style="color:#e94560;"></i>
+                <h6 style="font-family:'Rajdhani',sans-serif;">Cars</h6>
+                <a href="{% url 'main:company_car_list' %}" class="btn btn-sm w-100 mb-1" style="background:#1a1a2e;color:white;border-radius:15px;">View All</a>
+                <a href="{% url 'main:company_car_add' %}" class="btn btn-sm w-100" style="background:#e94560;color:white;border-radius:15px;">Add New</a>
+            </div>
+        </div>
+        <div class="col-md-3 mb-3">
+            <div class="card p-3 text-center">
+                <i class="fas fa-wrench fa-2x mb-2" style="color:#e94560;"></i>
+                <h6 style="font-family:'Rajdhani',sans-serif;">Parts</h6>
+                <a href="{% url 'main:company_part_list' %}" class="btn btn-sm w-100 mb-1" style="background:#1a1a2e;color:white;border-radius:15px;">View All</a>
+                <a href="{% url 'main:company_part_add' %}" class="btn btn-sm w-100" style="background:#e94560;color:white;border-radius:15px;">Add New</a>
+            </div>
+        </div>
+        <div class="col-md-3 mb-3">
+            <div class="card p-3 text-center">
+                <i class="fas fa-calendar-check fa-2x mb-2" style="color:#e94560;"></i>
+                <h6 style="font-family:'Rajdhani',sans-serif;">Test Drives</h6>
+                <a href="{% url 'main:company_test_drive_list' %}" class="btn btn-sm w-100" style="background:#1a1a2e;color:white;border-radius:15px;">Manage</a>
+            </div>
+        </div>
+        <div class="col-md-3 mb-3">
+            <div class="card p-3 text-center">
+                <i class="fas fa-credit-card fa-2x mb-2" style="color:#e94560;"></i>
+                <h6 style="font-family:'Rajdhani',sans-serif;">Loan Applications</h6>
+                <a href="{% url 'main:company_loan_list' %}" class="btn btn-sm w-100" style="background:#1a1a2e;color:white;border-radius:15px;">Manage</a>
+            </div>
+        </div>
+    </div>
+    <div class="row mt-3">
+        <div class="col-md-6 mb-3">
+            <div class="card p-3 text-center">
+                <i class="fas fa-shopping-bag fa-2x mb-2" style="color:#e94560;"></i>
+                <h6 style="font-family:'Rajdhani',sans-serif;">Car Purchases</h6>
+                <a href="{% url 'main:company_car_purchases' %}" class="btn btn-sm w-100" style="background:#1a1a2e;color:white;border-radius:15px;">View All Purchases</a>
+            </div>
+        </div>
+        <div class="col-md-6 mb-3">
+            <div class="card p-3 text-center">
+                <i class="fas fa-box fa-2x mb-2" style="color:#e94560;"></i>
+                <h6 style="font-family:'Rajdhani',sans-serif;">Part Orders</h6>
+                <a href="{% url 'main:company_part_orders' %}" class="btn btn-sm w-100" style="background:#1a1a2e;color:white;border-radius:15px;">View All Orders</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,49 @@
+{% extends 'main/base.html' %}
+{% block title %}Review Company Request - Admin{% endblock %}
+{% block content %}
+<div class="page-header"><div class="container"><h1><i class="fas fa-clipboard-check"></i> Review Company Request</h1></div></div>
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card p-4 mb-4">
+                <h4 style="font-family:'Rajdhani',sans-serif;color:#e94560;">{{ company_request.company_name }}</h4>
+                
+                <table class="table table-borderless mt-3">
+                    <tr><td><strong>Country:</strong></td><td>{{ company_request.country }}</td></tr>
+                    <tr><td><strong>Established:</strong></td><td>{{ company_request.established_year|default:"Not provided" }}</td></tr>
+                    <tr><td><strong>Contact Email:</strong></td><td>{{ company_request.contact_email }}</td></tr>
+                    <tr><td><strong>Contact Phone:</strong></td><td>{{ company_request.contact_phone|default:"Not provided" }}</td></tr>
+                    <tr><td><strong>Requested Username:</strong></td><td><span class="badge" style="background:#1a1a2e;">{{ company_request.requested_username }}</span></td></tr>
+                    <tr><td><strong>Applied Date:</strong></td><td>{{ company_request.created_at|date:"Y-m-d H:i" }}</td></tr>
+                </table>
+                
+                <div class="mt-2">
+                    <strong>Description:</strong>
+                    <p class="mt-2">{{ company_request.description|default:"No description provided" }}</p>
+                </div>
+            </div>
+            
+            <div class="card p-4">
+                <h5 style="font-family:'Rajdhani',sans-serif;">Admin Decision</h5>
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label class="form-label">Notes (optional)</label>
+                        <textarea name="admin_notes" class="form-control" rows="3" placeholder="Add notes about this decision..." style="border-radius:10px;"></textarea>
+                    </div>
+                    
+                    <div class="d-grid gap-2">
+                        <button type="submit" name="action" value="approve" class="btn btn-success" style="border-radius:10px;padding:12px;">
+                            <i class="fas fa-check"></i> Approve & Create Company
+                        </button>
+                        <button type="submit" name="action" value="reject" class="btn btn-danger" style="border-radius:10px;padding:12px;" onclick="return confirm('Reject this company request?')">
+                            <i class="fas fa-times"></i> Reject Request
+                        </button>
+                        <a href="{% url 'main:admin_company_requests' %}" class="btn btn-secondary" style="border-radius:10px;padding:12px;">Cancel</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

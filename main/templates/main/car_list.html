@@ -1,0 +1,39 @@
+{% extends 'main/base.html' %}
+
+{% block title %}Cars - Car Sale Management{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <h2 class="mb-4"><i class="fas fa-car"></i> Available Cars</h2>
+    <div class="row">
+        {% for car in cars %}
+        <div class="col-md-4 mb-4">
+            <div class="card car-card h-100">
+                {% if car.image %}
+                   <img src="{{ car.image.url }}" class="card-img-top" alt="{{ car.company.name }} {{ car.model }}">
+                {% else %}
+                    <div class="card-img-top bg-secondary d-flex align-items-center justify-content-center" style="height: 200px;">
+                        <i class="fas fa-car fa-4x text-white"></i>
+                    </div>
+                {% endif %}
+                <div class="card-body">
+                    <h5 class="card-title">{{ car.company.name }} {{ car.model }}</h5>
+                    <p class="card-text">
+                        <strong>Year:</strong> {{ car.year }}<br>
+                        <strong>Price:</strong> ${{ car.price }}<br>
+                        <strong>Color:</strong> {{ car.color }}<br>
+                        <strong>Fuel:</strong> {{ car.get_fuel_type_display }}<br>
+                        <strong>Mileage:</strong> {{ car.mileage }} km
+                    </p>
+                    <a href="{% url 'main:car_detail' car.pk %}" class="btn btn-primary w-100">View Details</a>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-12">
+            <div class="alert alert-info">No cars available at the moment.</div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

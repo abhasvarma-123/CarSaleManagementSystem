@@ -1,0 +1,51 @@
+{% extends 'main/base.html' %}
+{% block title %}Users - Admin{% endblock %}
+{% block content %}
+<div class="page-header"><div class="container"><h1><i class="fas fa-users"></i> Registered Users</h1></div></div>
+<div class="container">
+    <!-- Search -->
+    <div class="card mb-4 p-3">
+        <form method="get" class="row g-3 align-items-end">
+            <div class="col-md-9">
+                <label class="form-label">Search Users</label>
+                <input type="text" name="search" class="form-control" placeholder="Search by username or email..." value="{{ search_query }}" style="border-radius:10px;">
+            </div>
+            <div class="col-md-3">
+                <button type="submit" class="btn w-100" style="background:#e94560;color:white;border-radius:10px;">
+                    <i class="fas fa-search"></i> Search
+                </button>
+                <a href="{% url 'main:admin_user_list' %}" class="btn btn-sm w-100 mt-1" style="background:#1a1a2e;color:white;border-radius:10px;">Clear</a>
+            </div>
+        </form>
+    </div>
+    
+    {% if search_query %}
+    <div class="alert alert-info">
+        <i class="fas fa-search"></i> Search results for "<strong>{{ search_query }}</strong>" - {{ users.count }} user(s) found
+    </div>
+    {% endif %}
+    
+    <div class="card">
+        <div class="card-body">
+            <table class="table">
+                <thead><tr><th>Username</th><th>Email</th><th>Joined</th><th>Test Drives</th><th>Loans</th><th>Actions</th></tr></thead>
+                <tbody>
+                    {% for u in users %}
+                    <tr>
+                        <td><strong>{{ u.username }}</strong></td>
+                        <td>{{ u.email|default:"—" }}</td>
+                        <td>{{ u.date_joined|date:"Y-m-d" }}</td>
+                        <td><span class="badge" style="background:#1a1a2e;">{{ u.testdrive_set.count }}</span></td>
+                        <td><span class="badge" style="background:#e94560;">{{ u.loanapplication_set.count }}</span></td>
+                        <td><a href="{% url 'main:admin_user_detail' u.pk %}" class="btn btn-sm" style="background:#1a1a2e;color:white;">View</a></td>
+                    </tr>
+                    {% empty %}
+                    <tr><td colspan="6" class="text-center py-4 text-muted">No users found.</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <a href="{% url 'main:admin_dashboard' %}" class="btn mt-3" style="background:#1a1a2e;color:white;border-radius:20px;">← Back</a>
+</div>
+{% endblock %}

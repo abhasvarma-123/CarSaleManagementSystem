@@ -1,0 +1,38 @@
+{% extends 'main/base.html' %}
+{% block title %}Update Loan{% endblock %}
+{% block content %}
+<div class="page-header"><div class="container"><h1>Update Loan Application</h1></div></div>
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card p-4">
+                <p><strong>User:</strong> {{ loan.user.username }}</p>
+                <p><strong>Car:</strong> {{ loan.car.model }}</p>
+                <p><strong>Amount:</strong> ${{ loan.amount }}</p>
+                <p><strong>Duration:</strong> {{ loan.duration_months }} months</p>
+                <p><strong>Monthly Income:</strong> ${{ loan.monthly_income }}</p>
+                <p><strong>Employment:</strong> {{ loan.employment_status }}</p>
+                <hr>
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label class="form-label">Status</label>
+                        <select name="status" class="form-control" style="border-radius:10px;">
+                            <option value="pending" {% if loan.status == 'pending' %}selected{% endif %}>Pending</option>
+                            <option value="approved" {% if loan.status == 'approved' %}selected{% endif %}>Approved</option>
+                            <option value="rejected" {% if loan.status == 'rejected' %}selected{% endif %}>Rejected</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Notes</label>
+                        <textarea name="admin_notes" class="form-control" rows="3" style="border-radius:10px;">{{ loan.admin_notes }}</textarea>
+                    </div>
+                    <button type="submit" class="btn w-100" style="background:#e94560;color:white;border-radius:10px;padding:12px;">Update</button>
+                </form>
+                <a href="{% url 'main:company_loan_list' %}" class="btn w-100 mt-2" style="border-radius:10px;padding:12px;">Cancel</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+

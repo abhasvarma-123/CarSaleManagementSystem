@@ -1,0 +1,33 @@
+{% extends 'main/base.html' %}
+{% block title %}Update Test Drive{% endblock %}
+{% block content %}
+<div class="page-header"><div class="container"><h1>Update Test Drive</h1></div></div>
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card p-4">
+                <p><strong>User:</strong> {{ test_drive.user.username }}</p>
+                <p><strong>Car:</strong> {{ test_drive.car.model }}</p>
+                <p><strong>Date:</strong> {{ test_drive.date }}</p>
+                <p><strong>Time:</strong> {{ test_drive.time }}</p>
+                <p><strong>Notes:</strong> {{ test_drive.notes|default:"None" }}</p>
+                <hr>
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label class="form-label">Status</label>
+                        <select name="status" class="form-control" style="border-radius:10px;">
+                            <option value="pending" {% if test_drive.status == 'pending' %}selected{% endif %}>Pending</option>
+                            <option value="confirmed" {% if test_drive.status == 'confirmed' %}selected{% endif %}>Confirmed</option>
+                            <option value="completed" {% if test_drive.status == 'completed' %}selected{% endif %}>Completed</option>
+                            <option value="cancelled" {% if test_drive.status == 'cancelled' %}selected{% endif %}>Cancelled</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn w-100" style="background:#e94560;color:white;border-radius:10px;padding:12px;">Update Status</button>
+                </form>
+                <a href="{% url 'main:company_test_drive_list' %}" class="btn w-100 mt-2" style="border-radius:10px;padding:12px;">Cancel</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

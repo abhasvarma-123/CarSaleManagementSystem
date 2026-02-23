@@ -1,0 +1,139 @@
+{% extends 'main/base.html' %}
+{% block title %}Home - AutoSale{% endblock %}
+{% block content %}
+
+<div style="background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%); color: white; padding: 100px 0 80px; position: relative; overflow: hidden;">
+    <div style="position:absolute;top:-50px;right:-50px;width:400px;height:400px;background:rgba(233,69,96,0.1);border-radius:50%;"></div>
+    <div class="container text-center" style="position:relative;z-index:2;">
+        <h1 style="font-size:3.5rem;font-weight:700;font-family:'Rajdhani',sans-serif;margin-bottom:20px;">
+            Find Your <span style="color:#e94560;">Perfect Car</span>
+        </h1>
+        <p style="font-size:1.2rem;opacity:0.8;max-width:600px;margin:0 auto 40px;">
+            Browse top brands, schedule test drives, apply for loans — all in one place.
+        </p>
+        <a href="{% url 'main:car_list' %}" class="btn btn-lg me-3" style="background:#e94560;color:white;border:none;padding:14px 35px;border-radius:30px;font-weight:600;">
+            <i class="fas fa-car"></i> Browse Cars
+        </a>
+        {% if not user.is_authenticated %}
+        <a href="{% url 'main:register' %}" class="btn btn-lg me-2" style="background:transparent;color:white;border:2px solid white;padding:14px 35px;border-radius:30px;font-weight:600;">
+            <i class="fas fa-user-plus"></i> Register Free
+        </a>
+        <a href="{% url 'main:company_register_request' %}" class="btn btn-lg" style="background:transparent;color:white;border:2px solid #e94560;padding:14px 35px;border-radius:30px;font-weight:600;">
+            <i class="fas fa-building"></i> Register Company
+        </a>
+        {% endif %}
+    </div>
+</div>
+
+<!-- Companies Section -->
+{% if companies %}
+<div class="container my-5">
+    <h2 style="font-family:'Rajdhani',sans-serif;font-weight:700;font-size:2rem;margin-bottom:30px;">
+        <span style="color:#e94560;">Top</span> Companies
+    </h2>
+    <div class="row">
+        {% for company in companies %}
+        <div class="col-md-3 mb-3">
+            <div class="card text-center p-3" style="border-radius:12px;">
+                {% if company.logo %}
+                <img src="{{ company.logo.url }}" alt="{{ company.name }}" style="height:60px;object-fit:contain;margin-bottom:10px;">
+                {% else %}
+                <div style="height:60px;display:flex;align-items:center;justify-content:center;margin-bottom:10px;">
+                    <i class="fas fa-building fa-2x" style="color:#e94560;"></i>
+                </div>
+                {% endif %}
+                <h6 style="font-family:'Rajdhani',sans-serif;font-weight:700;">{{ company.name }}</h6>
+                <small style="color:#666;">{{ company.country }}</small>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endif %}
+
+<!-- Featured Cars -->
+<div class="container my-5">
+    <h2 style="font-family:'Rajdhani',sans-serif;font-weight:700;font-size:2rem;margin-bottom:30px;">
+        <span style="color:#e94560;">Featured</span> Cars
+    </h2>
+    <div class="row">
+        {% for car in featured_cars %}
+        <div class="col-md-4 mb-4">
+            <div class="card h-100">
+                {% if car.image %}
+                <img src="{{ car.image.url }}" class="card-img-top" style="height:200px;object-fit:cover;" alt="{{ car.model }}">
+                {% else %}
+                <div style="height:200px;background:linear-gradient(135deg,#1a1a2e,#16213e);display:flex;align-items:center;justify-content:center;">
+                    <i class="fas fa-car fa-3x" style="color:#e94560;"></i>
+                </div>
+                {% endif %}
+                <div class="card-body">
+                    <h5 style="font-family:'Rajdhani',sans-serif;font-weight:700;">{{ car.company.name }} {{ car.model }}</h5>
+                    <div style="color:#e94560;font-size:1.3rem;font-weight:700;margin-bottom:10px;">${{ car.price }}</div>
+                    <p class="text-muted small">
+                        <i class="fas fa-calendar"></i> {{ car.year }} &nbsp;
+                        <i class="fas fa-gas-pump"></i> {{ car.get_fuel_type_display }} &nbsp;
+                        <i class="fas fa-tachometer-alt"></i> {{ car.mileage }}km
+                    </p>
+                    <a href="{% url 'main:car_detail' car.pk %}" class="btn btn-sm w-100" style="background:#1a1a2e;color:white;border-radius:20px;">View Details</a>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-12 text-center py-5">
+            <i class="fas fa-car fa-3x text-muted mb-3"></i>
+            <p class="text-muted">No cars available yet.</p>
+        </div>
+        {% endfor %}
+    </div>
+    {% if featured_cars %}
+    <div class="text-center mt-3">
+        <a href="{% url 'main:car_list' %}" class="btn" style="background:#e94560;color:white;border-radius:25px;padding:10px 30px;">View All Cars</a>
+    </div>
+    {% endif %}
+</div>
+
+<!-- Features -->
+<div style="background:#1a1a2e;color:white;padding:60px 0;margin-top:40px;">
+    <div class="container">
+        <div class="row text-center">
+            <div class="col-md-3 mb-4">
+                <i class="fas fa-car fa-2x" style="color:#e94560;margin-bottom:15px;"></i>
+                <h5 style="font-family:'Rajdhani',sans-serif;">Wide Selection</h5>
+                <p style="opacity:0.7;font-size:0.9rem;">Browse hundreds of cars from top brands</p>
+            </div>
+            <div class="col-md-3 mb-4">
+                <i class="fas fa-calendar-check fa-2x" style="color:#e94560;margin-bottom:15px;"></i>
+                <h5 style="font-family:'Rajdhani',sans-serif;">Test Drives</h5>
+                <p style="opacity:0.7;font-size:0.9rem;">Schedule test drives at your convenience</p>
+            </div>
+            <div class="col-md-3 mb-4">
+                <i class="fas fa-credit-card fa-2x" style="color:#e94560;margin-bottom:15px;"></i>
+                <h5 style="font-family:'Rajdhani',sans-serif;">Easy Financing</h5>
+                <p style="opacity:0.7;font-size:0.9rem;">Quick loan applications with great rates</p>
+            </div>
+            <div class="col-md-3 mb-4">
+                <i class="fas fa-shield-alt fa-2x" style="color:#e94560;margin-bottom:15px;"></i>
+                <h5 style="font-family:'Rajdhani',sans-serif;">Trusted Platform</h5>
+                <p style="opacity:0.7;font-size:0.9rem;">Verified companies and secure transactions</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Call to Action for Companies -->
+{% if not user.is_authenticated %}
+<div class="container my-5">
+    <div class="card" style="background:linear-gradient(135deg,#e94560,#c73652);color:white;border:none;border-radius:15px;overflow:hidden;">
+        <div class="card-body p-5 text-center">
+            <i class="fas fa-building fa-3x mb-3"></i>
+            <h2 style="font-family:'Rajdhani',sans-serif;font-weight:700;">Are You a Car Company?</h2>
+            <p style="font-size:1.1rem;opacity:0.9;margin-bottom:30px;">Join AutoSale and reach thousands of customers. Register your company today!</p>
+            <a href="{% url 'main:company_register_request' %}" class="btn btn-lg" style="background:white;color:#e94560;border:none;padding:14px 40px;border-radius:30px;font-weight:600;">
+                <i class="fas fa-rocket"></i> Register Your Company
+            </a>
+        </div>
+    </div>
+</div>
+{% endif %}
+{% endblock %}

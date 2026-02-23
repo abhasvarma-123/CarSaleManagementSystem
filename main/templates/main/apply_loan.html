@@ -1,0 +1,25 @@
+{% extends 'main/base.html' %}
+
+{% block title %}Apply for Loan - Car Sale Management{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-body">
+                    <h2 class="card-title">Apply for Car Loan</h2>
+                    <h5 class="text-primary">{{ car.company.name }} {{ car.model }} - ${{ car.price }}</h5>
+                    <hr>
+                    <form method="post">
+                        {% csrf_token %}
+                        {{ form.as_p }}
+                        <button type="submit" class="btn btn-success">Submit Application</button>
+                        <a href="{% url 'main:car_detail' car.pk %}" class="btn btn-secondary">Cancel</a>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

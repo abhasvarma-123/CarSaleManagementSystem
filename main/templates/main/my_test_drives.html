@@ -1,0 +1,46 @@
+{% extends 'main/base.html' %}
+
+{% block title %}My Test Drives - Car Sale Management{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <h2 class="mb-4"><i class="fas fa-calendar-check"></i> My Test Drives</h2>
+    
+    {% if test_drives %}
+    <div class="card">
+        <div class="card-body">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Car</th>
+                        <th>Date</th>
+                        <th>Time</th>
+                        <th>Status</th>
+                        <th>Notes</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for td in test_drives %}
+                    <tr>
+                        <td>{{ td.car.company.name }} {{ td.car.model }}</td>
+                        <td>{{ td.date }}</td>
+                        <td>{{ td.time }}</td>
+                        <td>
+                            <span class="badge bg-{% if td.status == 'confirmed' %}success{% elif td.status == 'pending' %}warning{% else %}secondary{% endif %}">
+                                {{ td.get_status_display }}
+                            </span>
+                        </td>
+                        <td>{{ td.notes|default:"N/A" }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    {% else %}
+    <div class="alert alert-info">
+        You haven't scheduled any test drives yet. <a href="{% url 'main:car_list' %}">Browse cars</a>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,75 @@
+{% extends 'main/base.html' %}
+{% block title %}{{ car.company.name }} {{ car.model }} - AutoSale{% endblock %}
+{% block content %}
+<div class="page-header">
+    <div class="container">
+        <h1>{{ car.company.name }} {{ car.model }}</h1>
+        <p style="opacity:0.8;margin:0;">{{ car.year }} · {{ car.get_fuel_type_display }} · {{ car.color }}</p>
+    </div>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col-md-6 mb-4">
+            {% if car.image %}
+            <img src="{{ car.image.url }}" class="img-fluid rounded" style="width:100%;height:350px;object-fit:cover;" alt="{{ car.model }}">
+            {% else %}
+            <div style="height:350px;background:linear-gradient(135deg,#1a1a2e,#16213e);display:flex;align-items:center;justify-content:center;border-radius:12px;">
+                <i class="fas fa-car fa-5x" style="color:#e94560;"></i>
+            </div>
+            {% endif %}
+        </div>
+        <div class="col-md-6 mb-4">
+            <div class="card p-4">
+                <div style="color:#e94560;font-size:2rem;font-weight:700;margin-bottom:20px;">${{ car.price }}</div>
+                <table class="table table-borderless">
+                    <tr><td><strong>Company</strong></td><td>{{ car.company.name }}</td></tr>
+                    <tr><td><strong>Model</strong></td><td>{{ car.model }}</td></tr>
+                    <tr><td><strong>Year</strong></td><td>{{ car.year }}</td></tr>
+                    <tr><td><strong>Color</strong></td><td>{{ car.color }}</td></tr>
+                    <tr><td><strong>Fuel Type</strong></td><td>{{ car.get_fuel_type_display }}</td></tr>
+                    <tr><td><strong>Mileage</strong></td><td>{{ car.mileage }} km</td></tr>
+                    <tr><td><strong>Status</strong></td><td><span class="badge bg-success">{{ car.get_status_display }}</span></td></tr>
+                </table>
+                <p class="text-muted">{{ car.description }}</p>
+                {% if user.is_authenticated and not user.is_staff %}
+                    {% if not user.company %}
+                    <div class="d-grid gap-2 mt-3">
+                        <a href="{% url 'main:buy_car' car.pk %}" class="btn" style="background:#e94560;color:white;border-radius:10px;padding:12px;"><i class="fas fa-shopping-cart"></i> Buy This Car</a>
+                        <a href="{% url 'main:schedule_test_drive' car.pk %}" class="btn" style="background:#1a1a2e;color:white;border-radius:10px;padding:12px;"><i class="fas fa-calendar-check"></i> Schedule Test Drive</a>
+                        <a href="{% url 'main:apply_loan' car.pk %}" class="btn btn-outline-secondary" style="border-radius:10px;padding:12px;"><i class="fas fa-credit-card"></i> Apply for Loan</a>
+                    </div>
+                    {% endif %}
+                {% elif not user.is_authenticated %}
+                <div class="alert" style="background:#fff3f5;border-left:4px solid #e94560;border-radius:8px;">
+                    <i class="fas fa-info-circle" style="color:#e94560;"></i>
+                    Please <a href="{% url 'main:login' %}" style="color:#e94560;">login</a> to buy, schedule test drive or apply for a loan.
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    {% if parts %}
+    <div class="mt-4">
+        <h3 style="font-family:'Rajdhani',sans-serif;font-weight:700;">Available Parts from {{ car.company.name }}</h3>
+        <div class="row mt-3">
+            {% for part in parts %}
+            <div class="col-md-3 mb-3">
+                <div class="card p-3">
+                    <h6 style="font-family:'Rajdhani',sans-serif;">{{ part.name }}</h6>
+                    <p class="text-muted small mb-2">{{ part.category }}</p>
+                    <div style="color:#e94560;font-weight:700;">${{ part.price }}</div>
+                    <small class="text-muted">Stock: {{ part.stock }}</small>
+                    {% if user.is_authenticated and not user.is_staff %}
+                        {% if not user.company %}
+                        <a href="{% url 'main:add_to_cart' part.pk %}" class="btn btn-sm mt-2 w-100" style="background:#1a1a2e;color:white;border-radius:15px;"><i class="fas fa-cart-plus"></i> Add to Cart</a>
+                        {% endif %}
+                    {% endif %}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

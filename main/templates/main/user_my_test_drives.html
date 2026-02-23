@@ -1,0 +1,32 @@
+{% extends 'main/base.html' %}
+{% block title %}My Test Drives - AutoSale{% endblock %}
+{% block content %}
+<div class="page-header"><div class="container"><h1><i class="fas fa-calendar-check"></i> My Test Drives</h1></div></div>
+<div class="container">
+    {% if test_drives %}
+    <div class="card">
+        <div class="card-body">
+            <table class="table">
+                <thead><tr><th>Car</th><th>Date</th><th>Time</th><th>Status</th><th>Notes</th></tr></thead>
+                <tbody>
+                    {% for td in test_drives %}
+                    <tr>
+                        <td><strong>{{ td.car.company.name }} {{ td.car.model }}</strong></td>
+                        <td>{{ td.date }}</td>
+                        <td>{{ td.time }}</td>
+                        <td><span class="badge bg-{% if td.status == 'confirmed' %}success{% elif td.status == 'pending' %}warning{% else %}secondary{% endif %}">{{ td.get_status_display }}</span></td>
+                        <td>{{ td.notes|default:"—" }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    {% else %}
+    <div class="text-center py-5">
+        <i class="fas fa-calendar fa-3x text-muted mb-3"></i>
+        <p class="text-muted">No test drives yet. <a href="{% url 'main:car_list' %}" style="color:#e94560;">Browse cars</a></p>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

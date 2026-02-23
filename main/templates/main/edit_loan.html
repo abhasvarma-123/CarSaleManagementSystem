@@ -1,0 +1,26 @@
+{% extends 'main/base.html' %}
+{% block title %}Edit Loan - AutoSale{% endblock %}
+{% block content %}
+<div class="page-header"><div class="container"><h1><i class="fas fa-edit"></i> Edit Loan Application</h1></div></div>
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card p-4">
+                <h5 style="font-family:'Rajdhani',sans-serif;color:#e94560;">{{ loan.car.company.name }} {{ loan.car.model }} — ${{ loan.car.price }}</h5>
+                <hr>
+                <form method="post">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <div class="alert alert-info" style="border-left:3px solid #17a2b8;">
+                        <i class="fas fa-info-circle"></i> You can edit this application until it's reviewed by the company.
+                    </div>
+                    <button type="submit" class="btn w-100" style="background:#e94560;color:white;border-radius:10px;padding:12px;">
+                        <i class="fas fa-save"></i> Update Application
+                    </button>
+                    <a href="{% url 'main:my_loans' %}" class="btn w-100 mt-2" style="border-radius:10px;padding:12px;">Cancel</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

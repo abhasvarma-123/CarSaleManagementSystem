@@ -1,0 +1,29 @@
+{% extends 'main/base.html' %}
+{% block title %}Loan Applications{% endblock %}
+{% block content %}
+<div class="page-header"><div class="container"><h1><i class="fas fa-credit-card"></i> Loan Applications</h1></div></div>
+<div class="container">
+    <div class="card">
+        <div class="card-body">
+            <table class="table">
+                <thead><tr><th>User</th><th>Car</th><th>Amount</th><th>Duration</th><th>Income</th><th>Status</th><th>Actions</th></tr></thead>
+                <tbody>
+                    {% for loan in loans %}
+                    <tr>
+                        <td>{{ loan.user.username }}</td>
+                        <td>{{ loan.car.model }}</td>
+                        <td style="color:#e94560;font-weight:700;">${{ loan.amount }}</td>
+                        <td>{{ loan.duration_months }}m</td>
+                        <td>${{ loan.monthly_income }}</td>
+                        <td><span class="badge bg-{% if loan.status == 'approved' %}success{% elif loan.status == 'pending' %}warning{% else %}danger{% endif %}">{{ loan.get_status_display }}</span></td>
+                        <td><a href="{% url 'main:company_loan_update' loan.pk %}" class="btn btn-sm" style="background:#1a1a2e;color:white;">Update</a></td>
+                    </tr>
+                    {% empty %}
+                    <tr><td colspan="7" class="text-center py-4 text-muted">No loan applications.</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

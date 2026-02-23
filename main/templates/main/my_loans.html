@@ -1,0 +1,46 @@
+{% extends 'main/base.html' %}
+{% block title %}My Loans - AutoSale{% endblock %}
+{% block content %}
+<div class="page-header"><div class="container"><h1><i class="fas fa-credit-card"></i> My Loan Applications</h1></div></div>
+<div class="container">
+    {% if loans %}
+    {% for loan in loans %}
+    <div class="card mb-3">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-8">
+                    <h5 style="font-family:'Rajdhani',sans-serif;">{{ loan.car.company.name }} {{ loan.car.model }}</h5>
+                    <p class="text-muted mb-2">
+                        <i class="fas fa-dollar-sign"></i> Loan Amount: <strong style="color:#e94560;">${{ loan.amount }}</strong> &nbsp;|&nbsp;
+                        <i class="fas fa-calendar"></i> Duration: <strong>{{ loan.duration_months }} months</strong>
+                    </p>
+                    <p class="text-muted small">
+                        Applied: {{ loan.created_at|date:"Y-m-d" }} &nbsp;|&nbsp;
+                        Monthly Income: ${{ loan.monthly_income }} &nbsp;|&nbsp;
+                        Employment: {{ loan.employment_status }}
+                    </p>
+                    
+                    {% if loan.admin_notes %}
+                    <div class="alert" style="background:#f8f9fa;border-left:3px solid #e94560;margin-top:15px;">
+                        <strong><i class="fas fa-comment-dots"></i> Company Review:</strong>
+                        <p class="mb-0 mt-1">{{ loan.admin_notes }}</p>
+                    </div>
+                    {% endif %}
+                </div>
+                <div class="col-md-4 text-end">
+                    <span class="badge badge-lg" style="background:{% if loan.status == 'approved' %}#28a745{% elif loan.status == 'pending' %}#ffc107{% else %}#dc3545{% endif %};font-size:1rem;padding:10px 20px;">
+                        {{ loan.get_status_display }}
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+    {% else %}
+    <div class="text-center py-5">
+        <i class="fas fa-credit-card fa-3x text-muted mb-3"></i>
+        <p class="text-muted">No loan applications yet. <a href="{% url 'main:car_list' %}" style="color:#e94560;">Browse cars</a></p>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

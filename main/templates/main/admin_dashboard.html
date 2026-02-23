@@ -1,0 +1,79 @@
+{% extends 'main/base.html' %}
+{% block title %}Admin Dashboard{% endblock %}
+{% block content %}
+<div style="background:linear-gradient(135deg,#1a1a2e,#16213e);color:white;padding:40px 0;margin-bottom:40px;">
+    <div class="container"><h1 style="font-family:'Rajdhani',sans-serif;font-weight:700;"><i class="fas fa-shield-alt" style="color:#e94560;"></i> Admin Dashboard</h1></div>
+</div>
+<div class="container">
+    <div class="row mb-4">
+        <div class="col-md-3 mb-3"><div class="stat-card" style="background:#e94560;"><h3>{{ stats.total_companies }}</h3><p>Total Companies</p></div></div>
+        <div class="col-md-3 mb-3"><div class="stat-card" style="background:#1a1a2e;"><h3>{{ stats.total_users }}</h3><p>Registered Users</p></div></div>
+        <div class="col-md-3 mb-3"><div class="stat-card" style="background:#16213e;"><h3>{{ stats.pending_test_drives }}</h3><p>Pending Test Drives</p></div></div>
+        <div class="col-md-3 mb-3"><div class="stat-card" style="background:#0f3460;"><h3>{{ stats.pending_loans }}</h3><p>Pending Loans</p></div></div>
+    </div>
+    
+    {% if stats.pending_company_requests > 0 %}
+    <div class="alert alert-warning mb-4" style="border-left:4px solid #e94560;border-radius:8px;">
+        <i class="fas fa-exclamation-triangle" style="color:#e94560;"></i>
+        <strong>Action Required:</strong> You have <strong>{{ stats.pending_company_requests }}</strong> pending company registration request{% if stats.pending_company_requests > 1 %}s{% endif %}!
+        <a href="{% url 'main:admin_company_requests' %}" class="btn btn-sm float-end" style="background:#e94560;color:white;border-radius:15px;">Review Now</a>
+    </div>
+    {% endif %}
+    
+    <div class="row">
+        <div class="col-md-3 mb-3">
+            <div class="card p-4">
+                <i class="fas fa-building fa-2x mb-3" style="color:#e94560;"></i>
+                <h5 style="font-family:'Rajdhani',sans-serif;font-weight:700;">Manage Companies</h5>
+                <p class="text-muted small">Add companies and assign login credentials</p>
+                <a href="{% url 'main:admin_company_list' %}" class="btn btn-sm mb-1 w-100" style="background:#1a1a2e;color:white;border-radius:15px;">View All</a>
+                <a href="{% url 'main:admin_company_add' %}" class="btn btn-sm w-100" style="background:#e94560;color:white;border-radius:15px;">Add New Company</a>
+            </div>
+        </div>
+        <div class="col-md-3 mb-3">
+            <div class="card p-4">
+                <i class="fas fa-clipboard-list fa-2x mb-3" style="color:#e94560;"></i>
+                <h5 style="font-family:'Rajdhani',sans-serif;font-weight:700;">Company Requests</h5>
+                <p class="text-muted small">Review company registration applications</p>
+                {% if stats.pending_company_requests > 0 %}
+                <div class="badge mb-2" style="background:#e94560;font-size:0.9rem;">{{ stats.pending_company_requests }} Pending</div>
+                {% endif %}
+                <a href="{% url 'main:admin_company_requests' %}" class="btn btn-sm w-100" style="background:#1a1a2e;color:white;border-radius:15px;">View Requests</a>
+            </div>
+        </div>
+        <div class="col-md-3 mb-3">
+            <div class="card p-4">
+                <i class="fas fa-users fa-2x mb-3" style="color:#e94560;"></i>
+                <h5 style="font-family:'Rajdhani',sans-serif;font-weight:700;">Monitor Users</h5>
+                <p class="text-muted small">View all registered users and their activity</p>
+                <a href="{% url 'main:admin_user_list' %}" class="btn btn-sm w-100" style="background:#1a1a2e;color:white;border-radius:15px;">View All Users</a>
+            </div>
+        </div>
+        <div class="col-md-3 mb-3">
+            <div class="card p-4">
+                <i class="fas fa-car fa-2x mb-3" style="color:#e94560;"></i>
+                <h5 style="font-family:'Rajdhani',sans-serif;font-weight:700;">Browse Inventory</h5>
+                <p class="text-muted small">View all cars and parts in the system</p>
+                <a href="{% url 'main:car_list' %}" class="btn btn-sm mb-1 w-100" style="background:#1a1a2e;color:white;border-radius:15px;">View Cars</a>
+                <a href="{% url 'main:part_list' %}" class="btn btn-sm w-100" style="background:#16213e;color:white;border-radius:15px;">View Parts</a>
+            </div>
+            <div class="col-md-3 mb-3">
+            <div class="card p-4">
+                <i class="fas fa-shopping-bag fa-2x mb-3" style="color:#e94560;"></i>
+                <h5 style="font-family:'Rajdhani',sans-serif;font-weight:700;">Car Purchases</h5>
+                <p class="text-muted small">View all car purchase transactions</p>
+                <a href="{% url 'main:admin_all_purchases' %}" class="btn btn-sm w-100" style="background:#1a1a2e;color:white;border-radius:15px;">View All Purchases</a>
+            </div>
+        </div>
+        <div class="col-md-3 mb-3">
+            <div class="card p-4">
+                <i class="fas fa-box fa-2x mb-3" style="color:#e94560;"></i>
+                <h5 style="font-family:'Rajdhani',sans-serif;font-weight:700;">Part Orders</h5>
+                <p class="text-muted small">View all part order transactions</p>
+                <a href="{% url 'main:admin_all_part_orders' %}" class="btn btn-sm w-100" style="background:#1a1a2e;color:white;border-radius:15px;">View All Orders</a>
+            </div>
+        </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

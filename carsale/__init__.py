@@ -1,0 +1,1 @@
+# SQLite database - no MySQL configuration needed

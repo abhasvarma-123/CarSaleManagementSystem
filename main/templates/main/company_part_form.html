@@ -1,0 +1,19 @@
+{% extends 'main/base.html' %}
+{% block title %}{{ action }} Part{% endblock %}
+{% block content %}
+<div class="page-header"><div class="container"><h1><i class="fas fa-wrench"></i> {{ action }} Part</h1></div></div>
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card p-4">
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <button type="submit" class="btn" style="background:#e94560;color:white;border-radius:10px;padding:10px 30px;">Save Part</button>
+                    <a href="{% url 'main:company_part_list' %}" class="btn btn-secondary ms-2" style="border-radius:10px;padding:10px 30px;">Cancel</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

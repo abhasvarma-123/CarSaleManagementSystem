@@ -1,0 +1,48 @@
+{% extends 'main/base.html' %}
+
+{% block title %}Manage Test Drives - Admin{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <h2><i class="fas fa-calendar-check"></i> Manage Test Drives</h2>
+    
+    <div class="card">
+        <div class="card-body">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>User</th>
+                        <th>Car</th>
+                        <th>Date</th>
+                        <th>Time</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for td in test_drives %}
+                    <tr>
+                        <td>{{ td.user.username }}</td>
+                        <td>{{ td.car.company.name }} {{ td.car.model }}</td>
+                        <td>{{ td.date }}</td>
+                        <td>{{ td.time }}</td>
+                        <td>
+                            <span class="badge bg-{% if td.status == 'confirmed' %}success{% elif td.status == 'pending' %}warning{% else %}secondary{% endif %}">
+                                {{ td.get_status_display }}
+                            </span>
+                        </td>
+                        <td>
+                            <a href="{% url 'main:admin_test_drive_update' td.pk %}" class="btn btn-sm btn-primary">Update</a>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="6" class="text-center">No test drives found.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

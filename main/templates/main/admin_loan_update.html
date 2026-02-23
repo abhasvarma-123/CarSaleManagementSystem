@@ -1,0 +1,36 @@
+{% extends 'main/base.html' %}
+
+{% block title %}Update Loan - Admin{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <h2>Update Loan Application</h2>
+    <div class="card">
+        <div class="card-body">
+            <p><strong>User:</strong> {{ loan.user.username }}</p>
+            <p><strong>Car:</strong> {{ loan.car.company.name }} {{ loan.car.model }}</p>
+            <p><strong>Amount:</strong> ${{ loan.amount }}</p>
+            <p><strong>Duration:</strong> {{ loan.duration_months }} months</p>
+            <p><strong>Monthly Income:</strong> ${{ loan.monthly_income }}</p>
+            <hr>
+            <form method="post">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label class="form-label">Status</label>
+                    <select name="status" class="form-control" required>
+                        <option value="pending" {% if loan.status == 'pending' %}selected{% endif %}>Pending</option>
+                        <option value="approved" {% if loan.status == 'approved' %}selected{% endif %}>Approved</option>
+                        <option value="rejected" {% if loan.status == 'rejected' %}selected{% endif %}>Rejected</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Admin Notes</label>
+                    <textarea name="admin_notes" class="form-control" rows="3">{{ loan.admin_notes }}</textarea>
+                </div>
+                <button type="submit" class="btn btn-success">Update</button>
+                <a href="{% url 'main:admin_loan_list' %}" class="btn btn-secondary">Cancel</a>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

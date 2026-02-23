@@ -1,0 +1,41 @@
+{% extends 'main/base.html' %}
+{% block title %}My Purchases - AutoSale{% endblock %}
+{% block content %}
+<div class="page-header"><div class="container"><h1><i class="fas fa-shopping-bag"></i> My Car Purchases</h1></div></div>
+<div class="container">
+    {% if purchases %}
+    {% for purchase in purchases %}
+    <div class="card mb-3">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-8">
+                    <h5 style="font-family:'Rajdhani',sans-serif;">{{ purchase.car.company.name }} {{ purchase.car.model }}</h5>
+                    <p class="text-muted small mb-2">
+                        <i class="fas fa-calendar"></i> {{ purchase.purchase_date|date:"Y-m-d H:i" }} &nbsp;|&nbsp;
+                        <i class="fas fa-credit-card"></i> {{ purchase.get_payment_method_display }}
+                        {% if purchase.transaction_id %}&nbsp;|&nbsp; Transaction: {{ purchase.transaction_id }}{% endif %}
+                    </p>
+                    <p class="mb-0">
+                        <strong>Year:</strong> {{ purchase.car.year }} &nbsp;|&nbsp;
+                        <strong>Color:</strong> {{ purchase.car.color }} &nbsp;|&nbsp;
+                        <strong>Fuel:</strong> {{ purchase.car.get_fuel_type_display }}
+                    </p>
+                </div>
+                <div class="col-md-4 text-end">
+                    <span class="badge badge-lg" style="background:{% if purchase.status == 'confirmed' %}#28a745{% elif purchase.status == 'paid' %}#ffc107{% else %}#dc3545{% endif %};font-size:1rem;padding:10px 20px;">
+                        {{ purchase.get_status_display }}
+                    </span>
+                    <h4 style="color:#e94560;font-weight:700;margin-top:15px;">${{ purchase.total_price }}</h4>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+    {% else %}
+    <div class="text-center py-5">
+        <i class="fas fa-shopping-bag fa-3x text-muted mb-3"></i>
+        <p class="text-muted">No purchases yet. <a href="{% url 'main:car_list' %}" style="color:#e94560;">Browse cars</a></p>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
